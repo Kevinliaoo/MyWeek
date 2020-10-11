@@ -1,4 +1,7 @@
 venv/
-__pycache__/
+
 .idea/
+
 GUI/__pycache__/
+Database/__pycache__/
+__pycache__/
