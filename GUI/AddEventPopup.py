@@ -6,6 +6,10 @@ from Database.Database import Database
 from Database.Event import Event
 
 class AddEventPopup(tk.Tk):
+    """
+    TODAVIA TENGO UN BUG QUE RESOLVER
+    RESOLVER EL PROBLEMA DE COMO OCULTAR EL COMBOBOX EXTRA
+    """
     col1 = 20
     col2 = 130
     startY = 70
@@ -70,6 +74,8 @@ class AddEventPopup(tk.Tk):
 
         self.subjectLabel = tk.Label(self.container, text='Select subject: ', font=Constants.MEDIUM_FONT)
         self.subjectCombo = ttk.Combobox(self.container)
+        self.subjectCombo['values'] = Constants.SUBJECTS
+        self.subjectCombo['state'] = "readonly"
 
     def _placeWidgets(self, label, widget):
         """

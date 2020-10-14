@@ -1,14 +1,16 @@
 import json
 from tkinter import messagebox
-
 from Constants import Constants, Time
 
 
 class Database:
+    """
+    This class makes CRUD operations for database
+    """
 
     @staticmethod
     def reset():
-        """Resets all data from database"""
+        """Resets all data of the database"""
         with open(Constants.DBDIR, "w") as write_file:
             json.dump(Constants.DATA, write_file, indent=4)
 
@@ -37,8 +39,7 @@ class Database:
                 )
             )
             if response == "yes":
-                print("Override")
-                # Override
+                Database.edit(day, timeRange, event)
             return
 
         # Add new Event Object
@@ -65,3 +66,34 @@ class Database:
         with open(Constants.DBDIR, "r") as read_file:
             data = json.load(read_file)
             return data[day][timerange][Time.HOURS[timerange]]
+
+    @staticmethod
+    def edit(day, timeRange, newEvent):
+        """
+        Edits the Event in a day at a specific time
+
+        :param day: Day of the event
+        :param timeRange: Index value of Time.HOURS
+        :param event: New Event
+        :return: None
+        """
+        with open(Constants.DBDIR, "r") as read_file:
+            data = json.load(read_file)
+
+        selected = data[day][timeRange][Time.HOURS[timeRange]]
+
+        # Check if there really is an event scheduled
+        if selected != {}:
+            selected['name'] = newEvent.name
+            selected['start'] = newEvent.start
+            selected['end'] = newEvent.end
+            selected['day'] = newEvent.day
+            selected['type'] = newEvent.type
+            selected['subject'] = newEvent.subject
+        else:
+            messagebox.showwarning("Error!", "No event was scheduled for {}".format(Time.HOURS[timeRange]))
+            return
+
+        with open(Constants.DBDIR, "w") as write_file:
+            # Add new data to database
+            json.dump(data, write_file, indent=4)

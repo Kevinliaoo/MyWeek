@@ -36,6 +36,9 @@ class Constants:
     TASKS = [
         "Exam", "School", "Study", "Free", "Work", "Extra curricular", "Sleep"
     ]
+    SUBJECTS = [
+        "Mathemathics", "Physics", "Chemestry", "English", "History"
+    ]
 
     # JSON
     DBDIR = "./Database/database.json"

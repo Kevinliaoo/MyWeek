@@ -31,8 +31,6 @@ class MainWindow(tk.Tk):
         menuFrame = tk.Frame(container)
         addEventBtn = tk.Button(menuFrame, text="Add event", command=lambda: self._addEvent())
         addEventBtn.grid(row=0, column=0, sticky='W', pady=10, padx=10)
-        delEventBtn = tk.Button(menuFrame, text="Delete event", command=lambda: self._removeEvent())
-        delEventBtn.grid(row=0, column=1, sticky='W', pady=10, padx=10)
         menuFrame.grid(row=0, column=0, sticky='N')
         predTime = tk.Button(menuFrame, text='Predict timetable')
         predTime.grid(row=0, column=2, sticky='W', padx=10, pady=10)
@@ -65,13 +63,12 @@ class MainWindow(tk.Tk):
         """Show the AddEventPopup window for adding events"""
         addPop = AddEventPopup()
         addPop.mainloop()
-        # Reprint table
+        # Rebuild TimeTablePage
+        self.frames[TimeTablePage].buildTimeTable()
 
     def _removeEvent(self):
         """Remove a single event in the timetable"""
-        print("Remove event")
-        Database.insert()
-        Database.read()
+        pass
         # Reprint table
 
     def _clearSch(self):
@@ -79,16 +76,18 @@ class MainWindow(tk.Tk):
         response = messagebox.askquestion("Clear time table", "Are you sure you want to clear the time table?")
         if response == "yes":
             Database.reset()
+            self.frames[TimeTablePage].buildTimeTable()
 
 class TimeTablePage(tk.Frame):
     """
     Time table Frame
     """
-    HOURSROWS = len(Time.HOURS)
-    DAYSROWS = 7
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        self.parent = parent
+        self.controller = controller
 
         # GridLayout configurations
         self.grid_rowconfigure(0, weight=1)
@@ -99,30 +98,50 @@ class TimeTablePage(tk.Frame):
         tk.Label(titleFrame, text='My time table', font=Constants.TITLE_FONT).grid(row=0, column=0)
         titleFrame.grid(row=0, column=0)
 
-        self._buildTimeTable()
+        self.buildTimeTable()
 
-    def _buildTimeTable(self):
+    def buildTimeTable(self):
         """Build time table"""
         # Time table layout
-        tableFrame = tk.Frame(self)
+        self.tableFrame = tk.Frame(self)
         # Create the timetable
-        for k in range(len(Time.WEEKDAYS)):
-            tk.Label(tableFrame, text=Time.WEEKDAYS[k], font=Constants.MEDIUM_FONT, padx=10, pady=20).grid(row=0, column=k)
+        for d in range(len(Time.WEEKDAYS)):
+            tk.Label(
+                self.tableFrame, text = Time.WEEKDAYS[d], font = Constants.MEDIUM_FONT, padx = 25, pady = 30
+            ).grid(row=0, column=d)
 
-        for i in range(self.HOURSROWS):
-            self.l = tk.Label(tableFrame, text=Time.HOURS[i], font=Constants.MEDIUM_FONT, padx=30)
-            self.l.grid(row=i+1, column=0)
+            if d == 0:
+                for h in range(len(Time.HOURS)):
+                    tk.Label(
+                        self.tableFrame, text = Time.HOURS[h], font = Constants.MEDIUM_FONT, padx = 20, pady = 5
+                    ).grid(row= h + 1, column = d)
+            else:
+                for e in range(len(Time.HOURS)):
+                    data = Database.pick(Time.WEEKDAYS[d], e)
+                    self.e = tk.Label(
+                        self.tableFrame, width=14, height=1, font=Constants.MEDIUM_FONT
+                    )
 
-            for j in range(self.DAYSROWS):
+                    if data != {}:
+                        self.e['text'] = data['name']
+                        self.e.bind("<Button-1>", lambda ev: self._eventClicked(ev))
 
-                # Get data from database
-                if j > 0:
-                    data = Database.pick(Time.WEEKDAYS[j], i)
-                    # Check datamessagebox
+                    self.e.grid(row = e+1, column = d)
 
-                self.e = tk.Label(
-                    tableFrame, width = 14, height = 1, font = Constants.MEDIUM_FONT
-                )
-                self.e.grid(row=i+1, column=j+2)
+        self.tableFrame.grid(row=1, column=0)
 
-        tableFrame.grid(row=1, column=0)
+    def _eventClicked(self, event):
+        """
+        Function triggered when a label in the timetable is clicked
+
+        :param event: Click event
+        :return: None
+        """
+        # Retrieve the size of the parent widget relative to master widget
+        x = event.x_root - self.tableFrame.winfo_rootx()
+        y = event.y_root - self.tableFrame.winfo_rooty()
+
+        # Retreive the relative position on the parent widget
+        z = self.tableFrame.grid_location(x, y) # Coordenates
+
+        print(z)
