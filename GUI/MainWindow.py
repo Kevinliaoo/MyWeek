@@ -108,12 +108,17 @@ class TimeTablePage(tk.Frame):
         # Create the timetable
         for k in range(len(Time.WEEKDAYS)):
             tk.Label(tableFrame, text=Time.WEEKDAYS[k], font=Constants.MEDIUM_FONT, padx=10, pady=20).grid(row=0, column=k)
-        for i in range(self.HOURSROWS):
 
+        for i in range(self.HOURSROWS):
             self.l = tk.Label(tableFrame, text=Time.HOURS[i], font=Constants.MEDIUM_FONT, padx=30)
             self.l.grid(row=i+1, column=0)
 
             for j in range(self.DAYSROWS):
+
+                # Get data from database
+                if j > 0:
+                    data = Database.pick(Time.WEEKDAYS[j], i)
+                    # Check datamessagebox
 
                 self.e = tk.Label(
                     tableFrame, width = 14, height = 1, font = Constants.MEDIUM_FONT

@@ -1,7 +1,9 @@
 from tkinter import ttk
+from tkinter import messagebox
 import tkinter as tk
 from Constants import Constants, Time
-
+from Database.Database import Database
+from Database.Event import Event
 
 class AddEventPopup(tk.Tk):
     col1 = 20
@@ -37,22 +39,26 @@ class AddEventPopup(tk.Tk):
 
         self.startLabel = tk.Label(self.container, text='Start time: ', font=Constants.MEDIUM_FONT)
         self.startCombo = ttk.Combobox(self.container)
-        self. startCombo['values'] = Time.TIMELIST
+        self.startCombo['values'] = Time.TIMELIST
+        self.startCombo['state'] = "readonly"
         self._placeWidgets(self.startLabel, self.startCombo)
 
         self.endLabel = tk.Label(self.container, text='End time: ', font=Constants.MEDIUM_FONT)
         self.endCombo = ttk.Combobox(self.container)
         self.endCombo['values'] = Time.TIMELIST
+        self.endCombo['state'] = "readonly"
         self._placeWidgets(self.endLabel, self.endCombo)
 
         self.dayLabel = tk.Label(self.container, text="Day: ", font=Constants.MEDIUM_FONT)
         self.dayCombo = ttk.Combobox(self.container)
-        self.dayCombo['values'] = Time.WEEKDAYS
+        self.dayCombo['values'] = Time.WEEKDAYS[1:]
+        self.dayCombo['state'] = "readonly"
         self._placeWidgets(self.dayLabel, self.dayCombo)
 
         self.typeLabel = tk.Label(self.container, text='Event type', font=Constants.MEDIUM_FONT)
         self.typeCombo =ttk.Combobox(self.container)
         self.typeCombo['values'] = Constants.TASKS
+        self.typeCombo['state'] = "readonly"
         self.typeCombo.bind("<<ComboboxSelected>>", self._selection_changed)
         self._placeWidgets(self.typeLabel, self.typeCombo)
 
@@ -78,7 +84,7 @@ class AddEventPopup(tk.Tk):
         Show subject Combobox
         THERE IS A BUG TO FIX
         """
-        if self.typeCombo.get() == Constants.TASKS[0] or self.typeCombo.get() == Constants.TASKS[1] or self.typeCombo.get() == Constants.TASKS[2]:
+        if self.typeCombo.get() in Constants.TASKS[0:3]:
             if self.subjectAdded == False:
                 self._placeWidgets(self.subjectLabel, self.subjectCombo)
                 self.subjectAdded = True
@@ -95,8 +101,55 @@ class AddEventPopup(tk.Tk):
         self.destroy()
 
     def _btnClicked(self):
-        print("DFEDVEFDV")
-        self.subjectLabel.destroy()
-        self.subjectCombo.destroy()
+        """Insert data in database when OK button is clicked"""
         # Check if all fields were filled
+        name = self.nameEntry.get().strip()
+        start = self.startCombo.get()
+        end = self.endCombo.get()
+        day = self.dayCombo.get()
+        type = self.typeCombo.get()
+        try:
+            subject = self.subjectCombo.get()
+        except:
+            subject = None
+
+        # Check missing values
+        if name == "" or start == "" or end == "" or day == "" or type == "":
+            messagebox.showwarning("Missing fields!", "Please fill the missing fields!")
+            return
+        if type in Constants.TASKS[0:3]:
+            if subject == "":
+                messagebox.showwarning("Missing fields!", "Please fill the missing fields!")
+                return
+
         # Check if starts earlier than end
+        if Time.TIMELIST.index(start) >= Time.TIMELIST.index(end):
+            messagebox.showwarning("Time error", "Make sure that time is correct!")
+            return
+
+        # Check time
+        started = False
+        index = 0
+        for t in Time.HOURS:
+            # Create an event for each hour
+            if t[0:5] == start: started = True
+            if t[8:] == end:
+                started = False
+                # Add one last event
+                if subject == "":
+                    event = Event(name, start, end, day, type)
+                else:
+                    event = Event(name, start, end, day, type, subject)
+                Database.insert(day, index, event)
+
+            if started:
+                # Create the Event object
+                if subject == "":
+                    event = Event(name, start, end, day, type)
+                else:
+                    event = Event(name, start, end, day, type, subject)
+                Database.insert(day, index, event)
+
+            index += 1
+
+        self._destroy()
