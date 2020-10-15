@@ -97,3 +97,21 @@ class Database:
         with open(Constants.DBDIR, "w") as write_file:
             # Add new data to database
             json.dump(data, write_file, indent=4)
+
+    @staticmethod
+    def delete(day, timerange):
+        """
+        Deletes the Event in a day at a specific time
+
+        :param day: Day of the event
+        :param timeRange: Index value of Time.HOURS
+        :return: None
+        """
+        with open(Constants.DBDIR, "r") as read_file:
+            data = json.load(read_file)
+
+        data[day][timerange][Time.HOURS[timerange]] = {}
+
+        with open(Constants.DBDIR, "w") as write_file:
+            # Add new data to database
+            json.dump(data, write_file, indent=4)

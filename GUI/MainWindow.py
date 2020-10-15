@@ -4,6 +4,7 @@ from tkinter import messagebox
 from Constants import Constants, Time
 from GUI.AddEventPopup import AddEventPopup
 from Database.Database import Database
+from GUI.EventMenuPopup import EventMenuPopup
 
 
 class MainWindow(tk.Tk):
@@ -18,9 +19,12 @@ class MainWindow(tk.Tk):
         self.title("My weekly organizer")
         self.geometry(Constants.MAINWINDOWSIZE)
         self.resizable(False, False)
+        self.protocol("WM_DELETE_WINDOW", self._destroy)
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand = True)
+
+        self.popups = []
 
         # GridLayout configurations
         container.grid_rowconfigure(0, weight=1)
@@ -62,14 +66,10 @@ class MainWindow(tk.Tk):
     def _addEvent(self):
         """Show the AddEventPopup window for adding events"""
         addPop = AddEventPopup()
+        self.popups.append(addPop)
         addPop.mainloop()
         # Rebuild TimeTablePage
         self.frames[TimeTablePage].buildTimeTable()
-
-    def _removeEvent(self):
-        """Remove a single event in the timetable"""
-        pass
-        # Reprint table
 
     def _clearSch(self):
         """Clears all events of the time table"""
@@ -77,6 +77,11 @@ class MainWindow(tk.Tk):
         if response == "yes":
             Database.reset()
             self.frames[TimeTablePage].buildTimeTable()
+
+    def _destroy(self):
+        """Destroy the window"""
+        self.quit()
+        self.destroy()
 
 class TimeTablePage(tk.Frame):
     """
@@ -144,4 +149,8 @@ class TimeTablePage(tk.Frame):
         # Retreive the relative position on the parent widget
         z = self.tableFrame.grid_location(x, y) # Coordenates
 
-        print(z)
+        # Show event menu
+        eventMenuPopup = EventMenuPopup(z)
+        eventMenuPopup.mainloop()
+        self.buildTimeTable()
+

@@ -24,7 +24,7 @@ class AddEventPopup(tk.Tk):
         self.geometry(Constants.POPSIZE)
         self.resizable(False, False)
         self.title("Add event")
-        self.protocol("WM_DELETE_WINDOW", self._destroy)
+        self.protocol("WM_DELETE_WINDOW", self.destroyFrame)
 
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
@@ -67,7 +67,7 @@ class AddEventPopup(tk.Tk):
         self._placeWidgets(self.typeLabel, self.typeCombo)
 
         self.row += 2
-        self.cancelBtn = tk.Button(self.container, text='Cancel', font=Constants.MEDIUM_FONT, width=10, command=lambda: self._destroy())
+        self.cancelBtn = tk.Button(self.container, text='Cancel', font=Constants.MEDIUM_FONT, width=10, command=lambda: self.destroyFrame())
         self.okBtn = tk.Button(self.container, text='Ok', font=Constants.MEDIUM_FONT, width=10, command=lambda: self._btnClicked())
         self._placeWidgets(self.cancelBtn, self.okBtn)
         self.row -= 3
@@ -96,12 +96,13 @@ class AddEventPopup(tk.Tk):
                 self.subjectAdded = True
         else:
             if self.subjectAdded:
-                # Remove
-                self.subjectLabel.destroy()
-                self.subjectCombo.destroy()
+                # Hide subject label and combobox
+                self.subjectLabel.place_forget()
+                self.subjectCombo.place_forget()
                 self.subjectAdded = False
+                self.row -= 1
 
-    def _destroy(self):
+    def destroyFrame(self):
         """Destroy the window"""
         self.quit()
         self.destroy()
@@ -114,19 +115,18 @@ class AddEventPopup(tk.Tk):
         end = self.endCombo.get()
         day = self.dayCombo.get()
         type = self.typeCombo.get()
-        try:
-            subject = self.subjectCombo.get()
-        except:
-            subject = None
 
         # Check missing values
         if name == "" or start == "" or end == "" or day == "" or type == "":
             messagebox.showwarning("Missing fields!", "Please fill the missing fields!")
             return
         if type in Constants.TASKS[0:3]:
+            subject = self.subjectCombo.get()
             if subject == "":
                 messagebox.showwarning("Missing fields!", "Please fill the missing fields!")
                 return
+        else:
+            subject = None
 
         # Check if starts earlier than end
         if Time.TIMELIST.index(start) >= Time.TIMELIST.index(end):
@@ -158,4 +158,4 @@ class AddEventPopup(tk.Tk):
 
             index += 1
 
-        self._destroy()
+        self.destroyFrame()
