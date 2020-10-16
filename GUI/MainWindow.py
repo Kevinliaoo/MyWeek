@@ -1,10 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from Constants import Constants, Time
+from Constants import Constants, Time, Frames
 from GUI.AddEventPopup import AddEventPopup
 from Database.Database import Database
 from GUI.EventMenuPopup import EventMenuPopup
+from GUI.PredQualPopup import PredQualPopup
 
 
 class MainWindow(tk.Tk):
@@ -19,12 +20,10 @@ class MainWindow(tk.Tk):
         self.title("My weekly organizer")
         self.geometry(Constants.MAINWINDOWSIZE)
         self.resizable(False, False)
-        self.protocol("WM_DELETE_WINDOW", self._destroy)
+        self.protocol("WM_DELETE_WINDOW", self.destroyFrame)
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand = True)
-
-        self.popups = []
 
         # GridLayout configurations
         container.grid_rowconfigure(0, weight=1)
@@ -38,7 +37,7 @@ class MainWindow(tk.Tk):
         menuFrame.grid(row=0, column=0, sticky='N')
         predTime = tk.Button(menuFrame, text='Predict timetable')
         predTime.grid(row=0, column=2, sticky='W', padx=10, pady=10)
-        predQual = tk.Button(menuFrame, text='Predict qualification')
+        predQual = tk.Button(menuFrame, text='Predict qualification', command=lambda: self._predQual())
         predQual.grid(row=0, column=3, sticky='W', padx=10, pady=10)
         clearDB = tk.Button(menuFrame, text='Clear my schedule', command=lambda: self._clearSch())
         clearDB.grid(row=0, column=4, sticky='W', padx=10, pady=10)
@@ -66,10 +65,13 @@ class MainWindow(tk.Tk):
     def _addEvent(self):
         """Show the AddEventPopup window for adding events"""
         addPop = AddEventPopup()
-        self.popups.append(addPop)
+        Frames.frames.append(addPop)
         addPop.mainloop()
         # Rebuild TimeTablePage
-        self.frames[TimeTablePage].buildTimeTable()
+        try:
+            self.frames[TimeTablePage].buildTimeTable()
+        except:
+            pass
 
     def _clearSch(self):
         """Clears all events of the time table"""
@@ -78,8 +80,20 @@ class MainWindow(tk.Tk):
             Database.reset()
             self.frames[TimeTablePage].buildTimeTable()
 
-    def _destroy(self):
+    def _predQual(self):
+        """Show the PredQualPopup for predicting exam qualifications"""
+        predQual = PredQualPopup()
+        Frames.frames.append(predQual)
+        predQual.mainloop()
+
+    def destroyFrame(self):
         """Destroy the window"""
+        for f in Frames.frames:
+            try:
+                f.destroyFrame()
+            except:
+                pass
+
         self.quit()
         self.destroy()
 
@@ -151,6 +165,10 @@ class TimeTablePage(tk.Frame):
 
         # Show event menu
         eventMenuPopup = EventMenuPopup(z)
+        Frames.frames.append(eventMenuPopup)
         eventMenuPopup.mainloop()
-        self.buildTimeTable()
-
+        # Rebuild frame if was not destroyed
+        try:
+            self.buildTimeTable()
+        except:
+            pass

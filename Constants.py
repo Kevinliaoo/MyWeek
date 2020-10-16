@@ -14,6 +14,9 @@ class Time:
         '10 PM', '11 PM'
     ]
 
+class Frames:
+    frames = []
+
 class Constants:
 
     # Colors

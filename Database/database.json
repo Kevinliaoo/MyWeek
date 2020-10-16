@@ -4,7 +4,16 @@
             " 6 AM ~  7 AM": {}
         },
         {
-            " 7 AM ~  8 AM": {}
+            " 7 AM ~  8 AM": {
+                "name": "assasacc ddd",
+                "start": " 7 AM",
+                "end": " 8 AM",
+                "day": "Monday",
+                "type": "Exam",
+                "subject": "Chemestry",
+                "absences": 6,
+                "failures": 2
+            }
         },
         {
             " 8 AM ~  9 AM": {}
@@ -60,19 +69,64 @@
             " 8 AM ~  9 AM": {}
         },
         {
-            " 9 AM ~ 10 AM": {}
+            " 9 AM ~ 10 AM": {
+                "name": "dd",
+                "start": " 9 AM",
+                "end": " 2 PM",
+                "day": "Tuesday",
+                "type": "Work",
+                "subject": null,
+                "absences": 0,
+                "failures": 0
+            }
         },
         {
-            "10 AM ~ 11 AM": {}
+            "10 AM ~ 11 AM": {
+                "name": "dd",
+                "start": " 9 AM",
+                "end": " 2 PM",
+                "day": "Tuesday",
+                "type": "Work",
+                "subject": null,
+                "absences": 0,
+                "failures": 0
+            }
         },
         {
-            "11 AM ~ 12 PM": {}
+            "11 AM ~ 12 PM": {
+                "name": "dd",
+                "start": " 9 AM",
+                "end": " 2 PM",
+                "day": "Tuesday",
+                "type": "Work",
+                "subject": null,
+                "absences": 0,
+                "failures": 0
+            }
         },
         {
-            "12 PM ~  1 PM": {}
+            "12 PM ~  1 PM": {
+                "name": "dd",
+                "start": " 9 AM",
+                "end": " 2 PM",
+                "day": "Tuesday",
+                "type": "Work",
+                "subject": null,
+                "absences": 0,
+                "failures": 0
+            }
         },
         {
-            " 1 PM ~  2 PM": {}
+            " 1 PM ~  2 PM": {
+                "name": "dd",
+                "start": " 9 AM",
+                "end": " 2 PM",
+                "day": "Tuesday",
+                "type": "Work",
+                "subject": null,
+                "absences": 0,
+                "failures": 0
+            }
         },
         {
             " 2 PM ~  3 PM": {}

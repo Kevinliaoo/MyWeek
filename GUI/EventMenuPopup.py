@@ -82,9 +82,44 @@ class EventMenuPopup(tk.Tk):
             command = lambda: self._delete()
         )\
             .place(x = 150, y = row)
+        row += 2 * gap
+
+        # Add Spinbox to enter ammount of absences and exam failures
+        if self.event['type'] == 'Exam':
+
+            self.defaultAbs = tk.IntVar(self.container)
+            self.defaultAbs.set(int(self.event['absences']))
+            self.absencesLabel = tk.Label(
+                self.container, text = "Absences: ", font = Constants.MEDIUM_FONT
+            )\
+                .place(x = spaceX, y = row)
+            self.absencesSpinner = tk.Spinbox(
+                self.container, from_ = 0, to = 100, state='readonly', font = Constants.MEDIUM_FONT,
+                textvariable = self.defaultAbs
+            )\
+                .place(x = spaceX + 100, y = row)
+            row += gap
+
+            self.defaultFails = tk.IntVar(self.container)
+            self.defaultFails.set(int(self.event['failures']))
+            self.failuresLabel = tk.Label(
+                self.container, text = "Failures: ", font = Constants.MEDIUM_FONT
+            )\
+                .place(x = spaceX, y = row)
+            self.failuresSpinner = tk.Spinbox(
+                self.container, from_ = 0, to = 3, state='readonly', font = Constants.MEDIUM_FONT,
+                textvariable = self.defaultFails
+            )\
+                .place(x = spaceX + 100, y = row)
 
     def destroyFrame(self):
         """Destroy the window"""
+        # Get absence and failures
+        if self.event['type'] == 'Exam':
+            self.event['failures'] = self.defaultFails.get()
+            self.event['absences'] = self.defaultAbs.get()
+            self._change()
+
         self.quit()
         self.destroy()
 
@@ -118,8 +153,7 @@ class EventMenuPopup(tk.Tk):
 
     def _edit(self):
         """
-        This function asks the user for a new name of the event and changes it (by deleting
-        the old one and inserting a new Event)
+        This function asks the user for a new name of the event and changes it
 
         :return: None
         """
@@ -133,13 +167,22 @@ class EventMenuPopup(tk.Tk):
             if newName != None: messagebox.showwarning("Error!", "Please insert a valid name!")
             return
 
-        # Create a new Event with the new name
-        newEvent = Event(
-            newName, self.event['start'], self.event['end'], self.event['day'],
-            self.event['type'], self.event['subject']
-        )
         # Change name
         self.event['name'] = newName
+
+        self._change()
+
+    def _change(self):
+        """
+        This function changes the event on the database
+
+        :return: None
+        """
+        # Create a new Event with the new name
+        newEvent = Event(
+            self.event['name'], self.event['start'], self.event['end'], self.event['day'],
+            self.event['type'], self.event['subject'], self.event['absences'], self.event['failures']
+        )
 
         # Iterate
         started = False
@@ -151,14 +194,12 @@ class EventMenuPopup(tk.Tk):
             if t[8:] == self.event['end']:
                 started = False
                 # One last element
-                Database.delete(self.weekday, index)
-                Database.insert(self.weekday, index, newEvent)
+                Database.edit(self.weekday, index, newEvent)
                 break
 
             if started:
                 # Delete and add new Event
-                Database.delete(self.weekday, index)
-                Database.insert(self.weekday, index, newEvent)
+                Database.edit(self.weekday, index, newEvent)
 
             index += 1
 

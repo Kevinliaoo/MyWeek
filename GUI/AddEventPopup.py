@@ -1,7 +1,7 @@
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter as tk
-from Constants import Constants, Time
+from Constants import Constants, Time, Frames
 from Database.Database import Database
 from Database.Event import Event
 

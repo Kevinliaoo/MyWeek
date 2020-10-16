@@ -49,6 +49,8 @@ class Database:
         selected['day'] = event.day
         selected['type'] = event.type
         selected['subject'] = event.subject
+        selected['absences'] = 0
+        selected['failures'] = 0
 
         with open(Constants.DBDIR, "w") as write_file:
             # Add new data to database
@@ -90,6 +92,8 @@ class Database:
             selected['day'] = newEvent.day
             selected['type'] = newEvent.type
             selected['subject'] = newEvent.subject
+            selected['absences'] = newEvent.absences
+            selected['failures'] = newEvent.failures
         else:
             messagebox.showwarning("Error!", "No event was scheduled for {}".format(Time.HOURS[timeRange]))
             return
