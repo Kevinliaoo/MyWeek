@@ -31,7 +31,7 @@ class EventMenuPopup(tk.Tk):
         spaceX = 20
 
         self.tittleLabel = tk.Label(
-            self.container, text = self.event['name'], font = Constants.TITLE_FONT
+            self.container, font = Constants.TITLE_FONT, text = self.event['name']
         )\
             .place(x = spaceX, y = spaceX)
 
@@ -116,9 +116,7 @@ class EventMenuPopup(tk.Tk):
         """Destroy the window"""
         # Get absence and failures
         if self.event['type'] == 'Exam':
-            self.event['failures'] = self.defaultFails.get()
-            self.event['absences'] = self.defaultAbs.get()
-            self._change()
+            self._change(self.event['name'], self.defaultAbs.get(), self.defaultFails.get())
 
         self.quit()
         self.destroy()
@@ -138,12 +136,14 @@ class EventMenuPopup(tk.Tk):
                 if t[8:] == self.event['end']:
                     started = False
                     # Delete last event
-                    Database.delete(self.weekday, index)
+                    if self.event == Database.pick(self.weekday, index):
+                        Database.delete(self.weekday, index)
                     break
 
                 if started:
                     # Delete events
-                    Database.delete(self.weekday, index)
+                    if self.event == Database.pick(self.weekday, index):
+                        Database.delete(self.weekday, index)
 
                 index += 1
 
@@ -167,12 +167,11 @@ class EventMenuPopup(tk.Tk):
             if newName != None: messagebox.showwarning("Error!", "Please insert a valid name!")
             return
 
-        # Change name
-        self.event['name'] = newName
 
-        self._change()
+        self._change(newName, 0, 0)
+        self.destroyFrame()
 
-    def _change(self):
+    def _change(self, newName, absences, failures):
         """
         This function changes the event on the database
 
@@ -180,8 +179,8 @@ class EventMenuPopup(tk.Tk):
         """
         # Create a new Event with the new name
         newEvent = Event(
-            self.event['name'], self.event['start'], self.event['end'], self.event['day'],
-            self.event['type'], self.event['subject'], self.event['absences'], self.event['failures']
+            newName, self.event['start'], self.event['end'], self.event['day'],
+            self.event['type'], self.event['subject'], absences, failures
         )
 
         # Iterate
@@ -194,13 +193,17 @@ class EventMenuPopup(tk.Tk):
             if t[8:] == self.event['end']:
                 started = False
                 # One last element
-                Database.edit(self.weekday, index, newEvent)
+                if self.event == Database.pick(self.weekday, index):
+                    Database.edit(self.weekday, index, newEvent)
                 break
 
             if started:
                 # Delete and add new Event
-                Database.edit(self.weekday, index, newEvent)
+                if self.event == Database.pick(self.weekday, index):
+                    Database.edit(self.weekday, index, newEvent)
 
             index += 1
 
-        self._build_frame()
+        self.event['name'] = newName
+        self.event['absences'] = absences
+        self.event['failures'] = failures
