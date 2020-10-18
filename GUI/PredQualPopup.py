@@ -2,7 +2,11 @@ import tkinter as tk
 from Constants import Time, Constants
 from Database.Database import Database
 import datetime
-
+import pandas as pd
+import numpy as np
+import joblib
+import warnings
+warnings.filterwarnings('ignore')
 
 class PredQualPopup(tk.Tk):
 
@@ -37,7 +41,7 @@ class PredQualPopup(tk.Tk):
         """Build the frame"""
         self.spaceY = 80
         self.row = 0
-        self.gap = 40
+        self.gap = 25
         self.spaceX = 20
 
         self.titleLabel = tk.Label(
@@ -59,7 +63,8 @@ class PredQualPopup(tk.Tk):
         qual = self._predictQual(exam)
 
         tk.Label(
-            self.container, text = "{}: {}".format(exam['name'], qual, font = Constants.MEDIUM_FONT)
+            self.container, text = "{} ({}): {}".format(exam['name'], exam['subject'], qual),
+            font = Constants.MEDIUM_FONT
         )\
             .place(x = self.spaceX, y = self.spaceY + self.row * self.gap)
 
@@ -67,14 +72,26 @@ class PredQualPopup(tk.Tk):
         """
         Gets the qualification of an exam got from the Machine Learning models
 
-        :return: Qualification note
+        :return: Predicted grade for the exam
         """
+        # Load Machine Learning Models
+        mathModel = joblib.load(Constants.MATHGRADEPATH)
+        portModel = joblib.load(Constants.PORTGRADEPATH)
+
+        # Get input dataset
         stdTime = self._getStudy(exam)
         absences = exam['absences']
         failures = exam['failures']
-        print(stdTime, absences, failures)
+        df = np.array([[stdTime, failures, absences]])
 
-        return stdTime
+        # Select a model
+        if exam['subject'] in Constants.MAT_SUBJS: model = mathModel
+        elif exam['subject'] in Constants.POR_SUBJS: model = portModel
+
+        # Make predictions
+        preds = model.predict(df)
+
+        return np.round(preds[0])
 
     def _getStudy(self, exam):
         """

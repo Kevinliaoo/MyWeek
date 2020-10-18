@@ -39,10 +39,18 @@ class Constants:
     TASKS = [
         "Exam", "School", "Study", "Free", "Work", "Extra curricular", "Sleep"
     ]
-    SUBJECTS = [
-        "Mathemathics", "Physics", "Chemestry", "English", "History"
+    MAT_SUBJS = [
+        "Mathemathics", "Physics", "Chemestry"
     ]
+    POR_SUBJS = [
+        "English", "History"
+    ]
+    SUBJECTS = MAT_SUBJS + POR_SUBJS
 
     # JSON
     DBDIR = "./Database/database.json"
     DATA = {day: [{hour: {}} for hour in Time.HOURS] for day in Time.WEEKDAYS[1:]}
+
+    # Machine Learning
+    MATHGRADEPATH = "./Machine_learning/Models/mat_grade_pred.pkl"
+    PORTGRADEPATH = "./Machine_learning/Models/por_grade_pred.pkl"
