@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
-
 from Constants import Constants, Time, Frames
 from GUI.AddEventPopup import AddEventPopup
 from Database.Database import Database
 from GUI.EventMenuPopup import EventMenuPopup
 from GUI.PredQualPopup import PredQualPopup
+from GUI.PredTimePopup import PredTimePopup
 
 
 class MainWindow(tk.Tk):
@@ -35,7 +35,7 @@ class MainWindow(tk.Tk):
         addEventBtn = tk.Button(menuFrame, text="Add event", command=lambda: self._addEvent())
         addEventBtn.grid(row=0, column=0, sticky='W', pady=10, padx=10)
         menuFrame.grid(row=0, column=0, sticky='N')
-        predTime = tk.Button(menuFrame, text='Predict timetable')
+        predTime = tk.Button(menuFrame, text='Predict timetable', command=lambda: self._predictTimeTable())
         predTime.grid(row=0, column=2, sticky='W', padx=10, pady=10)
         predQual = tk.Button(menuFrame, text='Predict qualification', command=lambda: self._predQual())
         predQual.grid(row=0, column=3, sticky='W', padx=10, pady=10)
@@ -81,10 +81,21 @@ class MainWindow(tk.Tk):
             self.frames[TimeTablePage].buildTimeTable()
 
     def _predQual(self):
-        """Show the PredQualPopup for predicting exam qualifications"""
+        """
+        Show the PredQualPopup for predicting exam qualifications
+        """
         predQual = PredQualPopup()
         Frames.frames.append(predQual)
         predQual.mainloop()
+
+    def _predictTimeTable(self):
+        """
+        Predicts the ammount of studytime and free time the student can have,
+        based on student's exams target grade
+        """
+        predTime = PredTimePopup()
+        Frames.frames.append(predTime)
+        predTime.mainloop()
 
     def destroyFrame(self):
         """Destroy the window"""

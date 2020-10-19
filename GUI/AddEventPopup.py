@@ -1,11 +1,12 @@
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter as tk
-from Constants import Constants, Time, Frames
+from Constants import Constants, Time
 from Database.Database import Database
 from Database.Event import Event
+from GUI.Popups import Popup
 
-class AddEventPopup(tk.Tk):
+class AddEventPopup(Popup):
     """
     TODAVIA TENGO UN BUG QUE RESOLVER
     RESOLVER EL PROBLEMA DE COMO OCULTAR EL COMBOBOX EXTRA
@@ -18,18 +19,8 @@ class AddEventPopup(tk.Tk):
     subjectAdded = False
 
     def __init__(self, *args, **kwargs):
-
-        tk.Tk.__init__(self, *args, **kwargs)
-
-        self.geometry(Constants.POPSIZE)
-        self.resizable(False, False)
-        self.title("Add event")
-        self.protocol("WM_DELETE_WINDOW", self.destroyFrame)
-
-        self.container = tk.Frame(self)
-        self.container.pack(side="top", fill="both", expand=True)
-
-        self._buildFrame()
+        title = "Add event"
+        Popup.__init__(self, title, *args, **kwargs)
 
     def _buildFrame(self):
         """Builds the form"""
@@ -101,11 +92,6 @@ class AddEventPopup(tk.Tk):
                 self.subjectCombo.place_forget()
                 self.subjectAdded = False
                 self.row -= 1
-
-    def destroyFrame(self):
-        """Destroy the window"""
-        self.quit()
-        self.destroy()
 
     def _btnClicked(self):
         """Insert data in database when OK button is clicked"""

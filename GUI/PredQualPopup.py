@@ -1,41 +1,17 @@
 import tkinter as tk
 from Constants import Time, Constants
 from Database.Database import Database
-import datetime
-import pandas as pd
 import numpy as np
 import joblib
 import warnings
+from GUI.MLPopup import MLPopup
 warnings.filterwarnings('ignore')
 
-class PredQualPopup(tk.Tk):
+class PredQualPopup(MLPopup):
 
     def __init__(self, *args, **kwargs):
-        # Get current weekday
-        self.today = Time.WEEKDAYS[datetime.datetime.today().weekday()+1]
-        self.exams = []
-        # Get all exams and store them in self.exams
-        for day in Time.WEEKDAYS[1:]:
-
-            for i in range(len(Time.HOURS)):
-                data = Database.pick(day, i)
-
-                if data != {}:
-                    if data['type'] == "Exam":
-                        if data not in self.exams:
-                            self.exams.append(data)
-
-        tk.Tk.__init__(self, *args, **kwargs)
-
-        self.geometry(Constants.POPSIZE)
-        self.resizable(False, False)
-        self.title("Exam qualification predictor")
-        self.protocol("WM_DELETE_WINDOW", self.destroyFrame)
-
-        self.container = tk.Frame(self)
-        self.container.pack(side="top", fill="both", expand=True)
-
-        self._buildFrame()
+        title = "Exam qualification predictor"
+        MLPopup.__init__(self, title, *args, **kwargs)
 
     def _buildFrame(self):
         """Build the frame"""
@@ -138,8 +114,3 @@ class PredQualPopup(tk.Tk):
                                     if exam['start'] == t:
                                         break
         return studytime
-
-    def destroyFrame(self):
-        """Destroy the window"""
-        self.quit()
-        self.destroy()
