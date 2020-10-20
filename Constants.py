@@ -36,6 +36,7 @@ class Constants:
     POPHEIGHT = 500
     POPWIDTH = 350
     POPSIZE = '{}x{}'.format(POPWIDTH, POPHEIGHT)
+    MLPOPSIZE = "350x650"
     TASKS = [
         "Exam", "School", "Study", "Free", "Work", "Extra curricular", "Sleep"
     ]
@@ -54,3 +55,5 @@ class Constants:
     # Machine Learning
     MATHGRADEPATH = "./Machine_learning/Models/mat_grade_pred.pkl"
     PORTGRADEPATH = "./Machine_learning/Models/por_grade_pred.pkl"
+    MATHTIMEPATH = "./Machine_learning/Models/mat_time_pred.pkl"
+    PORTTIMEPATH = "./Machine_learning/Models/por_time_pred.pkl"

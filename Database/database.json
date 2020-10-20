@@ -253,7 +253,7 @@
                 "day": "Friday",
                 "type": "Exam",
                 "subject": "Mathemathics",
-                "absences": 3,
+                "absences": 1,
                 "failures": 0
             }
         },
@@ -268,7 +268,7 @@
                 "day": "Friday",
                 "type": "Exam",
                 "subject": "History",
-                "absences": 0,
+                "absences": 2,
                 "failures": 0
             }
         },
