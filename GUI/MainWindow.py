@@ -96,6 +96,10 @@ class MainWindow(tk.Tk):
         predTime = PredTimePopup()
         Frames.frames.append(predTime)
         predTime.mainloop()
+        try:
+            self.frames[TimeTablePage].buildTimeTable()
+        except:
+            pass
 
     def destroyFrame(self):
         """Destroy the window"""

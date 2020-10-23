@@ -1,6 +1,5 @@
 import tkinter as tk
 from Constants import Time, Constants
-from Database.Database import Database
 import numpy as np
 import joblib
 import warnings
@@ -39,7 +38,7 @@ class PredQualPopup(MLPopup):
         qual = self._predictQual(exam)
 
         tk.Label(
-            self.container, text = "{} ({}): {}".format(exam['name'], exam['subject'], qual),
+            self.container, text = "{} ({}):\t{:.2f}".format(exam['name'], exam['subject'], qual),
             font = Constants.MEDIUM_FONT
         )\
             .place(x = self.spaceX, y = self.spaceY + self.row * self.gap)
@@ -67,50 +66,4 @@ class PredQualPopup(MLPopup):
         # Make predictions
         preds = model.predict(df)
 
-        return np.round(preds[0])
-
-    def _getStudy(self, exam):
-        """
-        Iterate through database and get ammount of hours of studytime
-
-        :return: Studytime (Integer)
-        """
-        # Get the ammount of studytime
-        studytime = 0
-        # Iterate
-        for day in Time.WEEKDAYS[1:]:
-            for i in range(len(Time.HOURS)):
-                # Pick data
-                data = Database.pick(day, i)
-                # Check if no null data
-                if data != {}:
-                    # Check if is study
-                    if data['type'] == "Study":
-                        # Check if subject matches with exam's subject
-                        if data['subject'] == exam['subject']:
-                            # Check if studytime is within today and exam date
-                            iStudy = Time.WEEKDAYS.index(data['day'])
-                            iExam = Time.WEEKDAYS.index(exam['day'])
-                            iToday = Time.WEEKDAYS.index(self.today)
-
-                            # If today is before exam
-                            if iToday < iExam:
-                                if iToday <= iStudy and iStudy < iExam:
-                                    studytime += 1
-                            # If today is after exam (exam will be next week)
-                            if iToday > iExam:
-                                if iStudy >= iToday:
-                                    studytime += 1
-                                if iStudy < iExam:
-                                    studytime += 1
-                            # Get remaining time before exam in the same day
-                            if iStudy == iExam:
-                                for t in Time.TIMELIST:
-                                    # data reaches first
-                                    if data['start'] == t:
-                                        studytime += 1
-                                        break
-                                    # exam reaches first
-                                    if exam['start'] == t:
-                                        break
-        return studytime
+        return preds[0]
