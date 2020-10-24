@@ -1,4 +1,5 @@
 import tkinter as tk
+import datetime
 from tkinter import messagebox
 from Constants import Constants, Time, Frames
 from GUI.AddEventPopup import AddEventPopup
@@ -138,11 +139,20 @@ class TimeTablePage(tk.Frame):
         """Build time table"""
         # Time table layout
         self.tableFrame = tk.Frame(self)
+
+        today = Time.WEEKDAYS[datetime.datetime.today().weekday()+1]
+
         # Create the timetable
         for d in range(len(Time.WEEKDAYS)):
-            tk.Label(
-                self.tableFrame, text = Time.WEEKDAYS[d], font = Constants.MEDIUM_FONT, padx = 25, pady = 30
-            ).grid(row=0, column=d)
+            if Time.WEEKDAYS[d] == today:
+                tk.Label(
+                    self.tableFrame, text = Time.WEEKDAYS[d], font = Constants.MEDIUM_FONT, padx = 25, pady = 30,
+                    bg = Constants.TODAY[0], fg = Constants.TODAY[1]
+                ).grid(row=0, column=d)
+            else:
+                tk.Label(
+                    self.tableFrame, text = Time.WEEKDAYS[d], font = Constants.MEDIUM_FONT, padx = 25, pady = 30
+                ).grid(row=0, column=d)
 
             if d == 0:
                 for h in range(len(Time.HOURS)):
@@ -153,11 +163,16 @@ class TimeTablePage(tk.Frame):
                 for e in range(len(Time.HOURS)):
                     data = Database.pick(Time.WEEKDAYS[d], e)
                     self.e = tk.Label(
-                        self.tableFrame, width=14, height=1, font=Constants.MEDIUM_FONT
+                        self.tableFrame, width=14, height=1, font=Constants.MEDIUM_FONT,
+                        borderwidth=2, relief="ridge"
                     )
 
                     if data != {}:
+                        bg = Constants.GRIDCOLOR[Constants.TASKS.index(data['type'])][0]
+                        fg = Constants.GRIDCOLOR[Constants.TASKS.index(data['type'])][1]
                         self.e['text'] = data['name']
+                        self.e['bg'] = bg
+                        self.e['fg'] = fg
                         self.e.bind("<Button-1>", lambda ev: self._eventClicked(ev))
 
                     self.e.grid(row = e+1, column = d)

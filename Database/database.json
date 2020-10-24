@@ -1,40 +1,13 @@
 {
     "Monday": [
         {
-            " 6 AM ~  7 AM": {
-                "name": "study",
-                "start": " 6 AM",
-                "end": " 9 AM",
-                "day": "Monday",
-                "type": "Study",
-                "subject": "Mathemathics",
-                "absences": 0,
-                "failures": 0
-            }
+            " 6 AM ~  7 AM": {}
         },
         {
-            " 7 AM ~  8 AM": {
-                "name": "study",
-                "start": " 6 AM",
-                "end": " 9 AM",
-                "day": "Monday",
-                "type": "Study",
-                "subject": "Mathemathics",
-                "absences": 0,
-                "failures": 0
-            }
+            " 7 AM ~  8 AM": {}
         },
         {
-            " 8 AM ~  9 AM": {
-                "name": "study",
-                "start": " 6 AM",
-                "end": " 9 AM",
-                "day": "Monday",
-                "type": "Study",
-                "subject": "Mathemathics",
-                "absences": 0,
-                "failures": 0
-            }
+            " 8 AM ~  9 AM": {}
         },
         {
             " 9 AM ~ 10 AM": {}
@@ -131,16 +104,7 @@
             " 6 AM ~  7 AM": {}
         },
         {
-            " 7 AM ~  8 AM": {
-                "name": "aa",
-                "start": " 7 AM",
-                "end": " 8 AM",
-                "day": "Wednesday",
-                "type": "Free",
-                "subject": null,
-                "absences": 0,
-                "failures": 0
-            }
+            " 7 AM ~  8 AM": {}
         },
         {
             " 8 AM ~  9 AM": {}
@@ -173,90 +137,27 @@
             " 5 PM ~  6 PM": {}
         },
         {
-            " 6 PM ~  7 PM": {
-                "name": "Study History",
-                "start": " 6 PM",
-                "end": "7 PM",
-                "day": "Wednesday",
-                "type": "Study",
-                "subject": "History",
-                "absences": 0,
-                "failures": 0
-            }
+            " 6 PM ~  7 PM": {}
         },
         {
-            " 7 PM ~  8 PM": {
-                "name": "Study History",
-                "start": " 7 PM",
-                "end": "8 PM",
-                "day": "Wednesday",
-                "type": "Study",
-                "subject": "History",
-                "absences": 0,
-                "failures": 0
-            }
+            " 7 PM ~  8 PM": {}
         },
         {
-            " 9 PM ~ 10 PM": {
-                "name": "Study Physics",
-                "start": " 9 PM",
-                "end": "0 PM",
-                "day": "Wednesday",
-                "type": "Study",
-                "subject": "Physics",
-                "absences": 0,
-                "failures": 0
-            }
+            " 9 PM ~ 10 PM": {}
         },
         {
-            "10 PM ~ 11 PM": {
-                "name": "Study Physics",
-                "start": "10 PM",
-                "end": "1 PM",
-                "day": "Wednesday",
-                "type": "Study",
-                "subject": "Physics",
-                "absences": 0,
-                "failures": 0
-            }
+            "10 PM ~ 11 PM": {}
         }
     ],
     "Thursday": [
         {
-            " 6 AM ~  7 AM": {
-                "name": "exam1",
-                "start": " 6 AM",
-                "end": " 7 AM",
-                "day": "Thursday",
-                "type": "Exam",
-                "subject": "Mathemathics",
-                "absences": 0,
-                "failures": 0
-            }
+            " 6 AM ~  7 AM": {}
         },
         {
-            " 7 AM ~  8 AM": {
-                "name": "exam2",
-                "start": " 7 AM",
-                "end": " 8 AM",
-                "day": "Thursday",
-                "type": "Exam",
-                "subject": "Physics",
-                "absences": 0,
-                "failures": 0
-            }
+            " 7 AM ~  8 AM": {}
         },
         {
-            " 8 AM ~  9 AM": {
-                "name": "exam3",
-                "start": " 8 AM",
-                "end": " 9 AM",
-                "day": "Thursday",
-                "type": "Exam",
-                "subject": "History",
-                "absences": 0,
-                "failures": 0
-            }
+            " 8 AM ~  9 AM": {}
         },
         {
             " 9 AM ~ 10 AM": {}

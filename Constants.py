@@ -22,6 +22,18 @@ class Constants:
     # Colors
     WHITE = (255, 255, 255)
 
+    # Colors for Time table
+    GRIDCOLOR = [
+        ('#ff8f8f', '#4a0000'), # Red
+        ('#ffd382', '#5e3d00'), # Orange
+        ('#d5ff87', '#3f6100'), # Lime
+        ('#94ff9f', '#005409'), # Green
+        ('#87ffd9', '#006b49'), # turqoise
+        ('#8a92ff', '#000c5c'), # Blue
+        ('#d796ff', '#39005c')  # Purple
+    ]
+    TODAY = ('#000000', '#ffffff')
+
     # Fonts
     LARGE_FONT = ("Verdana", 12)
     MEDIUM_FONT = ('Verdana', 10)

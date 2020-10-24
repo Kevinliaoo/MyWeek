@@ -42,7 +42,7 @@ class PredTimePopup(MLPopup):
 
             self.spinners.append(tk.Spinbox(
                 self.container, from_ = 1, to = 10, state = 'readonly', font = Constants.MEDIUM_FONT,
-                textvariable = grade
+                textvariable = grade,
             ))
             self.grades.append(grade)
 
@@ -51,7 +51,8 @@ class PredTimePopup(MLPopup):
 
         self.okBtn = tk.Button(
             self.container, text = 'OK', font = Constants.MEDIUM_FONT, height = 2, width = 10,
-            command = lambda: self._okClicked()
+            command = lambda: self._okClicked(),
+            bg=Constants.GRIDCOLOR[3][0], fg=Constants.GRIDCOLOR[3][1]
         )\
             .place(x = 120, y = 600)
 
@@ -71,7 +72,6 @@ class PredTimePopup(MLPopup):
             value = "Night"
         )\
             .place(x = 180, y = 560)
-
 
     def _buildExam(self, exam):
         """Places a label with it's SpinBox"""
@@ -221,12 +221,25 @@ class PredTimePopup(MLPopup):
                     newTimeBlock.append(b[::-1])
                 timeBlocks = newTimeBlock
 
+            # In the fist iteration, try to group studytime together
             for block in timeBlocks:
                 if added == False:
                     if len(block) >= stdTime:
                         added = True
                         for u in range(int(stdTime)):
                             self._addStudyToSchedule(subject, block[u][0], day)
+                        return
+
+            # If the program could not find entire block, schedule separated time for study
+            blocksAdded = 0
+            for block in timeBlocks:
+                if added == False:
+                    for time in block:
+                        self._addStudyToSchedule(subject, time[0], day)
+                        blocksAdded += 1
+
+                        if blocksAdded == stdTime:
+                            return 
 
     def _addStudyToSchedule(self, subject, timerangeIndex, day):
         """

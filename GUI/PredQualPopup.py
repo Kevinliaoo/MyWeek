@@ -37,9 +37,15 @@ class PredQualPopup(MLPopup):
         """
         qual = self._predictQual(exam)
 
+        # Set color to text
+        if qual >= 6:
+            fg = '#00ff00'
+        else:
+            fg = '#ff0000'
+
         tk.Label(
             self.container, text = "{} ({}):\t{:.2f}".format(exam['name'], exam['subject'], qual),
-            font = Constants.MEDIUM_FONT
+            font = Constants.MEDIUM_FONT, fg = fg
         )\
             .place(x = self.spaceX, y = self.spaceY + self.row * self.gap)
 

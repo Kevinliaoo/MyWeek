@@ -57,10 +57,22 @@ class AddEventPopup(Popup):
         self.typeCombo.bind("<<ComboboxSelected>>", self._selection_changed)
         self._placeWidgets(self.typeLabel, self.typeCombo)
 
-        self.row += 2
-        self.cancelBtn = tk.Button(self.container, text='Cancel', font=Constants.MEDIUM_FONT, width=10, command=lambda: self.destroyFrame())
-        self.okBtn = tk.Button(self.container, text='Ok', font=Constants.MEDIUM_FONT, width=10, command=lambda: self._btnClicked())
-        self._placeWidgets(self.cancelBtn, self.okBtn)
+        self.row += 3
+
+        self.cancelBtn = tk.Button(
+            self.container, text='Cancel', font=Constants.MEDIUM_FONT, width=10,
+            command=lambda: self.destroyFrame(),
+            bg = Constants.GRIDCOLOR[0][0], fg = Constants.GRIDCOLOR[0][1]
+        )
+        self.cancelBtn.place(x=70, y=400)
+
+        self.okBtn = tk.Button(
+            self.container, text='Ok', font=Constants.MEDIUM_FONT, width=10,
+            command=lambda: self._btnClicked(),
+            bg=Constants.GRIDCOLOR[3][0], fg=Constants.GRIDCOLOR[3][1]
+        )
+        self.okBtn.place(x=200, y=400)
+
         self.row -= 3
 
         self.subjectLabel = tk.Label(self.container, text='Select subject: ', font=Constants.MEDIUM_FONT)
