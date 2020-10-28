@@ -131,7 +131,22 @@ class PredTimePopup(MLPopup):
             elif self.exams[exam]['subject'] in Constants.POR_SUBJS: model = portModel
 
             # Make predictions
-            preds = model.predict(df)
+            preds = model.predict(df)[0]
+            # Mapear los valores
+            if preds < 1:
+                preds = 0
+            elif preds >= 1 and preds < 2:
+                if preds < 1.5: preds = 1
+                else: preds = 2
+            elif preds >= 2 and preds < 3:
+                preds = (preds - 2) * 3 + 2
+            elif preds >= 3 and preds < 4:
+                preds = (preds - 3) * 5 + 5
+            elif preds == 4: preds = 10
+            elif preds > 4:
+                preds = 11
+
+            preds = np.array([preds])
             self.studyTime.append(np.round(preds))
 
     def _adjustTime(self):

@@ -61,6 +61,14 @@ class PredQualPopup(MLPopup):
 
         # Get input dataset
         stdTime = self._getStudy(exam)
+        if stdTime <= 2:
+            stdTime = 1
+        elif stdTime > 2 and stdTime <= 5:
+            stdTime = 2
+        elif stdTime > 5 and stdTime <= 10:
+            stdTime = 3
+        elif stdTime > 10:
+            stdTime = 4
         absences = exam['absences']
         failures = exam['failures']
         df = np.array([[stdTime, failures, absences]])
