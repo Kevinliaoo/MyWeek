@@ -1,6 +1,7 @@
 # MyWeek
 
 MyWeek is a program that helps students with their time management, MyWeek uses Machine Learning to organize the most suitable timetable for students acording to their goals, this program can also predict the student's exam performance based on their study time.  
+<br/>
 ![img](https://github.com/Kevinliaoo/MyWeek/blob/master/assets/foto1.PNG)
 
 ## Installation
@@ -8,12 +9,20 @@ MyWeek is a program that helps students with their time management, MyWeek uses 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install dependencies.
 
 ```bash
+python -m venv venv 
+venv\Scripts\activate.bat
 pip install -r requirements.txt
+```
+## Running
+
+```bash
+python Main.py
 ```
 
 ## Instructions
 * Adding events:\
-Click the "Add event" button to schedule a new event in the time table, a popup window will appear for user to insert the event's data.
+Click the "Add event" button to schedule a new event in the time table, a popup window will appear for user to insert the event's data.\
+<img src="https://github.com/Kevinliaoo/MyWeek/blob/master/assets/Foto2.PNG" width="200" height="100">
 * Editting event name:\
 To edit an event's name, click the event in the time table, a popup window showing the event's information will appear, then click the "Edit event" button. 
 * Deleting an event:\
@@ -28,11 +37,6 @@ The Machine Learning model has an accuracy of ±2 points.
 Click the "Predict timetable" button to make the program build a suitable time table for the student.\
 A popup window asking for students target grade will appear, and once the user inserts it's desirable grade, the program will add a suitable ammount of study time for the student to reach the goal. 
 
-## Running
-
-```bash
-python Main.py
-```
 
 ## Author
 Kevin Liao - @kevinliaoo
