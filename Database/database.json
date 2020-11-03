@@ -104,28 +104,10 @@
             " 6 AM ~  7 AM": {}
         },
         {
-            " 7 AM ~  8 AM": {
-                "name": "Study",
-                "start": " 7 AM",
-                "end": " 9 AM",
-                "day": "Wednesday",
-                "type": "Study",
-                "subject": "Chemestry",
-                "absences": 0,
-                "failures": 0
-            }
+            " 7 AM ~  8 AM": {}
         },
         {
-            " 8 AM ~  9 AM": {
-                "name": "Study",
-                "start": " 7 AM",
-                "end": " 9 AM",
-                "day": "Wednesday",
-                "type": "Study",
-                "subject": "Chemestry",
-                "absences": 0,
-                "failures": 0
-            }
+            " 8 AM ~  9 AM": {}
         },
         {
             " 9 AM ~ 10 AM": {}
