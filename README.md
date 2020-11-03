@@ -1,6 +1,7 @@
 # MyWeek
 
 MyWeek is a program that helps students with their time management, MyWeek uses Machine Learning to organize the most suitable timetable for students acording to their goals, this program can also predict the student's exam performance based on their study time.  
+![img](https://github.com/Kevinliaoo/MyWeek/blob/master/assets/foto1.PNG)
 
 ## Installation
 
